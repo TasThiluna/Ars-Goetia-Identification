@@ -14,7 +14,11 @@ MonoBehaviour:
   id: arsGoetiaIdentification
   title: Ars Goetia Identification
   author: TasThing
-  description: 
+  description: 'We''re already past that phase...
+
+
+    Module idea and implementation by TasThing, made off of Plant/Pickup identification
+    by BigCrunch22.'
   version: 1.0
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: 017f62cc5ada70b468de4fc6225364a5, type: 3}
+  previewImage: {fileID: 2800000, guid: dad77723246726e44b5a8951e221e86f, type: 3}
