@@ -20,8 +20,8 @@ public class arsGoetiaIdentification : MonoBehaviour
     public Texture questionMark;
     public Texture[] symbols;
     public Renderer[] lights;
-    public Color lit;
-    public Color black;
+    public Material litMat;
+    public Material blackMat;
 
     private int stage;
     private int[] demons = new int[3];
@@ -99,7 +99,7 @@ public class arsGoetiaIdentification : MonoBehaviour
                 Debug.LogFormat("[Ars Goetia Identification #{0}] That was correct.", moduleId);
                 screenText.text = "";
                 stage++;
-                lights[stage - 1].material.color = lit;
+                lights[stage - 1].material = litMat;
                 if (stage == 3)
                 {
                     module.HandlePass();
@@ -131,10 +131,10 @@ public class arsGoetiaIdentification : MonoBehaviour
         {
             yield return new WaitForSeconds(.3f);
             foreach (Renderer l in lights)
-                l.material.color = black;
+                l.material = blackMat;
             yield return new WaitForSeconds(.3f);
             foreach (Renderer l in lights)
-                l.material.color = lit;
+                l.material = litMat;
         }
     }
 
