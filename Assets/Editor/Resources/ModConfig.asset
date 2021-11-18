@@ -18,6 +18,6 @@ MonoBehaviour:
     by TasThing, made off of Plant/Pickup identification by BigCrunch22.\r\n\r\nManual
     HTML: https://ktane.timwi.de/HTML/Ars%20Goetia%20Identification.html\r\nManual
     PDF: https://ktane.timwi.de/PDF/Ars%20Goetia%20Identification.pdf"
-  version: 1.0.3
+  version: 1.0.4
   outputFolder: build
   previewImage: {fileID: 2800000, guid: dad77723246726e44b5a8951e221e86f, type: 3}

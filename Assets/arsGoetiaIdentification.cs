@@ -26,10 +26,12 @@ public class arsGoetiaIdentification : MonoBehaviour
     private int stage;
     private int[] demons = new int[3];
 
-    private static readonly string[] names = new string[] { "Bael", "Agares", "Vassago", "Samigina", "Marbas", "Valefor", "Amon", "Barbatos", "Paimon", "Buer", "Gusion", "Sitri", "Beleth", "Leraje", "Eligos", "Zepar", "Botis", "Bathin", "Sallos", "Purson", "Marax", "Ipos", "Aim", "Naberius", "Glasya-Labolas", "Bune", "Ronove", "Berith", "Astaroth", "Forneus", "Foras", "Asmoday", "Gaap", "Furfur", "Marchosias", "Stolas", "Pheynix", "Halphas", "Malphas", "Raum", "Focalor", "Vephar", "Sabnock", "Shaz", "Vinea", "Bifrovs", "Voval", "Haagenti", "Crocell", "Furcas", "Balaam", "Alloces", "Camio", "Murmur", "Orobas", "Gremory", "Voso", "Avnas", "Oriax", "Naphula", "Zagan", "Ualac", "Andras", "Flauros", "Andrealphus", "Cimejes", "Amdusias", "Belial", "Decarabia", "Seere", "Dantalion", "Andromalius" };
+    private static readonly string[] names = new[] { "Bael", "Agares", "Vassago", "Samigina", "Marbas", "Valefor", "Amon", "Barbatos", "Paimon", "Buer", "Gusion", "Sitri", "Beleth", "Leraje", "Eligos", "Zepar", "Botis", "Bathin", "Sallos", "Purson", "Marax", "Ipos", "Aim", "Naberius", "Glasya-Labolas", "Bune", "Ronove", "Berith", "Astaroth", "Forneus", "Foras", "Asmoday", "Gaap", "Furfur", "Marchosias", "Stolas", "Pheynix", "Halphas", "Malphas", "Raum", "Focalor", "Vephar", "Sabnock", "Shaz", "Vinea", "Bifrovs", "Voval", "Haagenti", "Crocell", "Furcas", "Balaam", "Alloces", "Camio", "Murmur", "Orobas", "Gremory", "Voso", "Avnas", "Oriax", "Naphula", "Zagan", "Ualac", "Andras", "Flauros", "Andrealphus", "Cimejes", "Amdusias", "Belial", "Decarabia", "Seere", "Dantalion", "Andromalius" };
+    private static readonly KeyCode[] typableKeys = new[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0, KeyCode.Minus, KeyCode.Equals, KeyCode.Backspace, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O, KeyCode.P, KeyCode.LeftBracket, KeyCode.RightBracket, KeyCode.Backslash, KeyCode.CapsLock, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.Semicolon, KeyCode.Quote, KeyCode.Return, KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M, KeyCode.Comma, KeyCode.Period, KeyCode.Slash, KeyCode.Space };
     private bool capsLock;
     private bool active;
     private bool activated;
+    private bool moduleSelected;
 
     private static int moduleIdCounter = 1;
     private int moduleId;
@@ -41,6 +43,9 @@ public class arsGoetiaIdentification : MonoBehaviour
         foreach (KMSelectable key in keyboard)
             key.OnInteract += delegate () { KeyPress(key); return false; };
         module.OnActivate += delegate () { activated = true; };
+        var mainSelectable = GetComponent<KMSelectable>();
+        mainSelectable.OnFocus += delegate () { moduleSelected = true; };
+        mainSelectable.OnDefocus += delegate () { moduleSelected = false; };
         demons = Enumerable.Range(0, names.Length).ToList().Shuffle().Take(3).ToArray();
     }
 
@@ -138,10 +143,18 @@ public class arsGoetiaIdentification : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (moduleSelected || Application.isEditor)
+            foreach (KeyCode key in typableKeys)
+                if (Input.GetKeyDown(key))
+                    KeyPress(keyboard[Array.IndexOf(typableKeys, key)]);
+    }
+
     //Twitch Plays
-    #pragma warning disable 414
+#pragma warning disable 414
     private readonly string TwitchHelpMessage = @"Use !{0} enter/submit <text> to submit <text> as answer. The module will just press enter if <text> is empty. | Use !{0} type <text> to type <text> into the module. <text> is limited to 23 characters for both command. | Use !{0} backspace <number> to press backspace <number> times. Limited to 2 digits number at most. | Use !{0} clear to clear the text from the module.";
-    #pragma warning restore 414
+#pragma warning restore 414
 
     IEnumerator ProcessTwitchCommand(string cmd)
     {
