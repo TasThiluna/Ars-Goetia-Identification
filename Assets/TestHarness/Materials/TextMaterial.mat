@@ -7,12 +7,12 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: TextMaterial
-  m_Shader: {fileID: 4800000, guid: a476fc8290dd79847a16d1040aa478d2, type: 3}
+  m_Shader: {fileID: 4800000, guid: 306ffc165961a2c40806bad3bb861c43, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -39,7 +39,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
