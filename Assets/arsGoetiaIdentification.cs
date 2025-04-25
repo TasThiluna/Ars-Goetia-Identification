@@ -16,9 +16,9 @@ public class arsGoetiaIdentification : MonoBehaviour
     public KMSelectable[] keyboard;
     public TextMesh[] keyTexts;
     public TextMesh screenText;
-    public Renderer display;
-    public Texture questionMark;
-    public Texture[] symbols;
+    public SpriteRenderer display;
+    public Sprite questionMark;
+    public Sprite[] symbols;
     public Renderer[] lights;
     public Material litMat;
     public Material blackMat;
@@ -37,7 +37,7 @@ public class arsGoetiaIdentification : MonoBehaviour
     private int moduleId;
     private bool moduleSolved;
 
-    void Awake()
+    private void Awake()
     {
         moduleId = moduleIdCounter++;
         foreach (KMSelectable key in keyboard)
@@ -49,7 +49,7 @@ public class arsGoetiaIdentification : MonoBehaviour
         demons = Enumerable.Range(0, names.Length).ToList().Shuffle().Take(3).ToArray();
     }
 
-    void KeyPress(KMSelectable key)
+    private void KeyPress(KMSelectable key)
     {
         key.AddInteractionPunch(.25f);
         audio.PlaySoundAtTransform("type", key.transform);
@@ -85,14 +85,14 @@ public class arsGoetiaIdentification : MonoBehaviour
         }
     }
 
-    void PressEnter()
+    private void PressEnter()
     {
         if (moduleSolved)
             return;
         if (!active)
         {
             active = true;
-            display.material.mainTexture = symbols[demons[stage]];
+            display.sprite = symbols[demons[stage]];
             audio.PlaySoundAtTransform("sound" + rnd.Range(1, 9), transform);
             Debug.LogFormat("[Ars Goetia Identification #{0}] Stage {1}: You need to submit {2}.", moduleId, stage + 1, names[demons[stage]]);
         }
@@ -117,7 +117,7 @@ public class arsGoetiaIdentification : MonoBehaviour
                 }
                 else
                 {
-                    display.material.mainTexture = questionMark;
+                    display.sprite = questionMark;
                     active = false;
                     audio.PlaySoundAtTransform("stage", transform);
                 }
@@ -130,7 +130,7 @@ public class arsGoetiaIdentification : MonoBehaviour
         }
     }
 
-    IEnumerator FlashLights()
+    private IEnumerator FlashLights()
     {
         for (int i = 0; i < 5; i++)
         {
