@@ -16,9 +16,9 @@ public class arsGoetiaIdentification : MonoBehaviour
     public KMSelectable[] keyboard;
     public TextMesh[] keyTexts;
     public TextMesh screenText;
-    public SpriteRenderer display;
-    public Sprite questionMark;
-    public Sprite[] symbols;
+    public Renderer display;
+    public Texture questionMark;
+    public Texture[] symbols;
     public Renderer[] lights;
     public Material litMat;
     public Material blackMat;
@@ -26,7 +26,8 @@ public class arsGoetiaIdentification : MonoBehaviour
     private int stage;
     private int[] demons = new int[3];
 
-    private static readonly string[] names = new[] { "Bael", "Agares", "Vassago", "Samigina", "Marbas", "Valefor", "Amon", "Barbatos", "Paimon", "Buer", "Gusion", "Sitri", "Beleth", "Leraje", "Eligos", "Zepar", "Botis", "Bathin", "Sallos", "Purson", "Marax", "Ipos", "Aim", "Naberius", "Glasya-Labolas", "Bune", "Ronove", "Berith", "Astaroth", "Forneus", "Foras", "Asmoday", "Gaap", "Furfur", "Marchosias", "Stolas", "Pheynix", "Halphas", "Malphas", "Raum", "Focalor", "Vephar", "Sabnock", "Shaz", "Vinea", "Bifrovs", "Voval", "Haagenti", "Crocell", "Furcas", "Balaam", "Alloces", "Camio", "Murmur", "Orobas", "Gremory", "Voso", "Avnas", "Oriax", "Naphula", "Zagan", "Ualac", "Andras", "Flauros", "Andrealphus", "Cimejes", "Amdusias", "Belial", "Decarabia", "Seere", "Dantalion", "Andromalius" };
+    private static readonly string[] allNames = new[] { "Bael", "Agares", "Vassago", "Samigina", "Marbas", "Valefor", "Amon", "Barbatos", "Paimon", "Buer", "Gusion", "Sitri", "Beleth", "Leraje", "Eligos", "Zepar", "Botis", "Bathin", "Sallos", "Purson", "Marax", "Ipos", "Aim", "Naberius", "Glasya-Labolas", "Bune", "Ronove", "Berith", "Astaroth", "Forneus", "Foras", "Asmoday", "Gaap", "Furfur", "Marchosias", "Stolas", "Pheynix", "Halphas", "Malphas", "Raum", "Focalor", "Vephar", "Sabnock", "Shaz", "Vinea", "Bifrovs", "Voval", "Haagenti", "Crocell", "Furcas", "Balaam", "Alloces", "Camio", "Murmur", "Orobas", "Gremory", "Voso", "Avnas", "Oriax", "Naphula", "Zagan", "Ualac", "Andras", "Flauros", "Andrealphus", "Cimejes", "Amdusias", "Belial", "Decarabia", "Seere", "Dantalion", "Andromalius" };
+    private string[] names;
     private static readonly KeyCode[] typableKeys = new[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0, KeyCode.Minus, KeyCode.Equals, KeyCode.Backspace, KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O, KeyCode.P, KeyCode.LeftBracket, KeyCode.RightBracket, KeyCode.Backslash, KeyCode.CapsLock, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L, KeyCode.Semicolon, KeyCode.Quote, KeyCode.Return, KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M, KeyCode.Comma, KeyCode.Period, KeyCode.Slash, KeyCode.Space };
     private bool capsLock;
     private bool active;
@@ -43,10 +44,12 @@ public class arsGoetiaIdentification : MonoBehaviour
         foreach (KMSelectable key in keyboard)
             key.OnInteract += delegate () { KeyPress(key); return false; };
         module.OnActivate += delegate () { activated = true; };
+        var ixsOfNames = Enumerable.Range(0, symbols.Length).Select(i => Array.IndexOf(allNames, symbols[i].name)).ToArray();
+        names = ixsOfNames.OrderBy(x => Array.IndexOf(allNames, ixsOfNames[x])).Select(i => allNames[i]).ToArray();
         var mainSelectable = GetComponent<KMSelectable>();
         mainSelectable.OnFocus += delegate () { moduleSelected = true; };
         mainSelectable.OnDefocus += delegate () { moduleSelected = false; };
-        demons = Enumerable.Range(0, names.Length).ToList().Shuffle().Take(3).ToArray();
+        demons = Enumerable.Range(0, allNames.Length).ToList().Shuffle().Take(3).ToArray();
     }
 
     private void KeyPress(KMSelectable key)
@@ -92,7 +95,7 @@ public class arsGoetiaIdentification : MonoBehaviour
         if (!active)
         {
             active = true;
-            display.sprite = symbols[demons[stage]];
+            display.material.mainTexture = symbols[demons[stage]];
             audio.PlaySoundAtTransform("sound" + rnd.Range(1, 9), transform);
             Debug.LogFormat("[Ars Goetia Identification #{0}] Stage {1}: You need to submit {2}.", moduleId, stage + 1, names[demons[stage]]);
         }
@@ -117,7 +120,7 @@ public class arsGoetiaIdentification : MonoBehaviour
                 }
                 else
                 {
-                    display.sprite = questionMark;
+                    display.material.mainTexture = questionMark;
                     active = false;
                     audio.PlaySoundAtTransform("stage", transform);
                 }
