@@ -82,6 +82,7 @@
      <Compile Include="Assets\TestHarness\Widgets\SerialNumber.cs" />
      <Compile Include="Assets\TestHarness\Widgets\TwoFactorWidget.cs" />
      <Compile Include="Assets\TestHarness\Widgets\Widget.cs" />
+     <None Include="Assets\Shaders\KT_Mobile-Diffuse-RecolorPattern.shader" />
      <None Include="Assets\Shaders\KT_3D_Text-Diffuse.shader" />
      <None Include="Assets\Shaders\BlendTwoTexturesUnlit.shader" />
      <None Include="Assets\Shaders\BlendTwoTexturesLitAndUnlitVertexColor.shader" />
