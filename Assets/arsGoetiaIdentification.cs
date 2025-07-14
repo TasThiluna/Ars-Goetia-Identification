@@ -186,19 +186,22 @@ public class arsGoetiaIdentification : MonoBehaviour
 
     private bool CanAddCharacter(char c)
     {
-        var origRotation = screenText.transform.rotation;
-        //var origScale = screenText.transform.lossyScale;
-        //screenText.transform.parent = null;
+        var origRotation = screenText.transform.localRotation;
+        var origScale = screenText.transform.localScale;
         var origText = screenText.text;
-        screenText.transform.eulerAngles = new Vector3(90, 0, 0);
-        //screenText.transform.lossyScale = new Vector3(1, 1, 1);
+
+        screenText.transform.parent = null;
+        screenText.transform.localEulerAngles = new Vector3(90, 0, 0);
+        screenText.transform.localScale = new Vector3(1, 1, 1);
+
         screenText.text = origText + c;
         var size = screenText.GetComponent<MeshRenderer>().bounds.size;
-        screenText.transform.rotation = origRotation;
-        //screenText.transform.lossyScale = origScale;
-        //screenText.transform.parent = transform.Find("Text Box");
+
+        screenText.transform.parent = transform.Find("Text Box");
+        screenText.transform.localRotation = origRotation;
+        screenText.transform.localScale = origScale;
         screenText.text = origText;
-        return size.x < .134f;
+        return size.x < .295f;
     }
 
     private void Caps()
